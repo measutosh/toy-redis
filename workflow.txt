@@ -2,3 +2,11 @@
   - reading command arguments
   - close the socket using defer
   - run an infinite loop to call blocking function
+  - setup handleconection to run the cleint requests in goroutine
+  - run "go run main.go 3001" to test the current code
+- Handling Commands
+  - improvise the handleConnection to handle requests
+  - make a map of string to act as database in main.go
+  - pass it to handleConnection and refractor
+  - split the recieved text, first element will be the command
+  - as per the command handle the requests
