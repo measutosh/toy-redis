@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -50,10 +51,42 @@ func handleConnection(db map[string]string, client net.Conn) {
         	response = "ERR wrong number of arguments for 'set' command"
         }
       case "DEL":
+        if len(parts) > 1 {
+          key := parts[1]
+          _, ok := db[key]
+
+          if ok {
+            delete(db, key)
+            response = "1"
+          } else {
+            response = "0"
+          }
+        } else {
+          response = "ERR wrong number of arguments for 'del'"
+        }
       case "INCR":
         // if values exists then convert the text into int
         // increase the string
-        // convert it back to string and store in the map 
+        // convert it back to string and store in the map
+        if len(parts) > 1 {
+        	key := parts[1]
+        	value, ok := db[key]
+        
+        	if ok {
+        		intValue, err := strconv.Atoi(value)
+        		if err != nil {
+        			response = "ERR value is not an integer or out of range"
+        		} else {
+        			response = strconv.Itoa(intValue + 1)
+        			db[key] = response
+        		}
+        	} else {
+        		response = "1"
+        		db[key] = response
+        	}
+        } else {
+        	response = "ERR wrong number of arguments for 'incr' command"
+        }
       default:
         response = "ERR unknown command"
     }
