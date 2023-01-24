@@ -1,0 +1,4 @@
+- The TCP server
+  - reading command arguments
+  - close the socket using defer
+  - run an infinite loop to call blocking function
