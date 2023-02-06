@@ -10,3 +10,14 @@
   - pass it to handleConnection and refractor
   - split the recieved text, first element will be the command
   - as per the command handle the requests
+
+- this version will add race conditions, so modifying the code a bit
+    - this will add a goroutine that will handle all the operations on the map in a way that makes concurrent writes impossible
+    - go channels will be there for communication between goroutines
+    - a struct to handle commands 
+    - a channel to handle the database coroutine
+    - client coroutine will write to the commandMessage and db coroutine will read from it
+    - update handleConnection to use channel instead of map
+    - give channel to goroutine, wait for that channel to be written to.
+    - configure handleDB to put the response string on the responseChannel field of the commandChannel instance we recieved
+    - now the client goroutine can in turn read the value and write it back to client
